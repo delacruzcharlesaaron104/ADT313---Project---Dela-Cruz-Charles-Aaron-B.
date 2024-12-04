@@ -1,0 +1,83 @@
+/* Container for the entire page */
+.lists-container {
+  padding: 20px;
+  background-color: #3e3f41;
+  font-family: Arial, sans-serif;
+}
+
+/* Button container for creating a new movie */
+.create-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.create-container button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.create-container button:hover {
+  background-color: #45a049;
+}
+
+/* Table container styling */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Table styles */
+.movie-lists {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.movie-lists th, .movie-lists td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.movie-lists th {
+  background-color: #4ca3af;
+  color: white;
+  font-size: 18px;
+}
+
+.movie-lists tr:hover {
+  background-color: #cfc8ce;
+}
+
+/* Button styles for actions (Edit and Delete) */
+.edit-btn, .delete-btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
