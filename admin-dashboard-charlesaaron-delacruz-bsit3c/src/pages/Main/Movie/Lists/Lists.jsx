@@ -7,16 +7,28 @@ const Lists = () => {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // current page number
+  const [totalPages, setTotalPages] = useState(1); // total pages
+  const [pageSize, setPageSize] = useState(20); // number of items per page
 
-  const getMovies = () => {
-    axios.get('/movies').then((response) => {
-      setLists(response.data);
-    });
+  const getMovies = (page = 1) => {
+    axios
+      .get(`/movies`)
+      .then((response) => {
+        const movies = response.data;
+        const startIndex = (page - 1) * pageSize;
+        const paginatedMovies = movies.slice(startIndex, startIndex + pageSize);
+        setLists(paginatedMovies);
+        setTotalPages(Math.ceil(movies.length / pageSize));
+      })
+      .catch((error) => {
+        console.error('Error fetching movies:', error);
+      });
   };
 
   useEffect(() => {
-    getMovies();
-  }, []);
+    getMovies(currentPage);
+  }, [currentPage]);
 
   const handleDelete = (id) => {
     const isConfirm = window.confirm('Are you sure that you want to delete this data?');
@@ -28,21 +40,26 @@ const Lists = () => {
           },
         })
         .then(() => {
-          const tempLists = [...lists];
-          const index = lists.findIndex((movie) => movie.id === id);
-          if (index !== undefined || index !== -1) {
-            tempLists.splice(index, 1);
-            setLists(tempLists);
-          }
+          const tempLists = lists.filter((movie) => movie.id !== id);
+          setLists(tempLists);
+        })
+        .catch((error) => {
+          console.error('Error deleting movie:', error);
         });
     }
   };
 
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
-    <div className='lists-container'>
-      <div className='create-container'>
+    <div className="lists-container">
+      <div className="create-container">
         <button
-          type='button'
+          type="button"
           onClick={() => {
             navigate('/main/movies/form');
           }}
@@ -50,8 +67,8 @@ const Lists = () => {
           Create new
         </button>
       </div>
-      <div className='table-container'>
-        <table className='movie-lists'>
+      <div className="table-container">
+        <table className="movie-lists">
           <thead>
             <tr>
               <th>ID</th>
@@ -66,18 +83,18 @@ const Lists = () => {
                 <td>{movie.title}</td>
                 <td>
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => {
                       navigate('/main/movies/form/' + movie.id);
                     }}
-                    className='edit-btn'
+                    className="edit-btn"
                   >
                     Edit
                   </button>
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => handleDelete(movie.id)}
-                    className='delete-btn'
+                    className="delete-btn"
                   >
                     Delete
                   </button>
@@ -86,6 +103,25 @@ const Lists = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="pagination-container">
+        <button
+          type="button"
+          onClick={() => handlePageChange(currentPage - 1)}
+          hidden={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          type="button"
+          onClick={() => handlePageChange(currentPage + 1)}
+          hidden={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

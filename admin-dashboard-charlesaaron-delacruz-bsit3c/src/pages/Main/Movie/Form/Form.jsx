@@ -1,7 +1,12 @@
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './Form.css';
+
+
+// create MovieContext
+const MovieContext = createContext();
+
 
 const Form = () => {
   const [query, setQuery] = useState('');
@@ -14,6 +19,8 @@ const Form = () => {
   const [trailers, setTrailers] = useState([]);
   const navigate = useNavigate();
   let { movieId } = useParams();
+
+  const [movies, setMovies] = useState([]);
 
   const handleSearch = useCallback(() => {
     axios.get(`https://api.themoviedb.org/3/search/movie`, {
@@ -39,16 +46,16 @@ const Form = () => {
   };
 
   const fetchAdditionalDetails = (movieId) => {
-    // fetch movie cast
+    // get movie cast
     axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits`, {
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjhkNWY2ZGY4MWI5ZDIyNTQ1MGZjMGYwZmM4MzI4MyIsIm5iZiI6MTczMTA3Njg1My4wNjYsInN1YiI6IjY3MmUyMmY1ZjI4ODBkMTAwNGY2YzI1YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RfhOUWELjREd7m7Y_jnUKtECZlUce4OEzvEaGvh6ZAk',
       },
     }).then((response) => {
-      setCast(response.data.cast.slice(0, 12)); // display 12 cast only
+      setCast(response.data.cast.slice(0, 18)); // display 18 cast
     });
 
-    // fetch movie trailers
+    // get movie trailers
     axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
       headers: {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjhkNWY2ZGY4MWI5ZDIyNTQ1MGZjMGYwZmM4MzI4MyIsIm5iZiI6MTczMTA3Njg1My4wNjYsInN1YiI6IjY3MmUyMmY1ZjI4ODBkMTAwNGY2YzI1YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.RfhOUWELjREd7m7Y_jnUKtECZlUce4OEzvEaGvh6ZAk',
@@ -68,9 +75,8 @@ const Form = () => {
       return;
     }
 
-
+    //movie data
     const data = {
-      // Movie details
       tmdbId: selectedMovie.id,
       title: title,
       overview: overview,
@@ -86,17 +92,17 @@ const Form = () => {
         name: member.name,
         url: member.profile_path
           ? `https://image.tmdb.org/t/p/w200${member.profile_path}`
-          : null, // Fallback if no profile image
+          : null,
         characterName: member.character,
       })),
 
-      // Videos (trailers)
+      // trailers
       videos: trailers.map((trailer) => ({
         url: `https://www.youtube.com/watch?v=${trailer.key}`,
         description: trailer.name,
       })),
 
-      // Photos
+      // photos
       photos: [
         {
           url: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
@@ -142,7 +148,7 @@ const Form = () => {
           id: response.data.tmdbId,
           original_title: response.data.title,
           overview: response.data.overview,
-          popularity: response.data.popularity, 
+          popularity: response.data.popularity,
           release_date: response.data.releaseDate,
           vote_average: response.data.voteAverage,
           backdrop_path: response.data.backdropPath,
@@ -151,13 +157,13 @@ const Form = () => {
         setSelectedMovie(tempData);
         setTitle(tempData.original_title);
         setOverview(tempData.overview);
-        fetchAdditionalDetails(response.data.tmdbId); // fetch details for editing
+        fetchAdditionalDetails(response.data.tmdbId); // get details for editing
       });
     }
   }, [movieId]);
 
   return (
-    <>
+    <MovieContext.Provider value={{ movies, setMovies }}>
       <h1>{movieId !== undefined ? 'Edit ' : 'Create '} Movie</h1>
 
       {movieId === undefined && (
@@ -206,37 +212,36 @@ const Form = () => {
                 />
               </div>
               <div className="field">
-            Popularity:
-            <input
-              type="text"
-              value={selectedMovie ? selectedMovie.popularity : ''}
-              readOnly
-            />
-          </div>
+                Popularity:
+                <input
+                  type="text"
+                  value={selectedMovie ? selectedMovie.popularity : ''}
+                  readOnly
+                />
+              </div>
 
-          <div className="field">
-            Release Date:
-            <input
-              type="text"
-              value={selectedMovie ? selectedMovie.release_date : ''}
-              readOnly
-            />
-          </div>
+              <div className="field">
+                Release Date:
+                <input
+                  type="text"
+                  value={selectedMovie ? selectedMovie.release_date : ''}
+                  readOnly
+                />
+              </div>
 
-          <div className="field">
-            Vote Average:
-            <input
-              type="text"
-              value={selectedMovie ? selectedMovie.vote_average : ''}
-              readOnly
-            />
-          </div>
-
+              <div className="field">
+                Vote Average:
+                <input
+                  type="text"
+                  value={selectedMovie ? selectedMovie.vote_average : ''}
+                  readOnly
+                />
+              </div>
             </>
+
           )}
         </form>
       </div>
-
       {cast.length > 0 && (
         <div className="cast-section">
           <h2>Cast</h2>
@@ -272,11 +277,17 @@ const Form = () => {
           ))}
         </div>
       )}
+
       <button type="button" onClick={handleSave}>
         Save
       </button>
-    </>
+    </MovieContext.Provider>
   );
 };
+
+// custom hook to use MovieContext
+export const useMovieContext = () => useContext(MovieContext);
+
+
 
 export default Form;

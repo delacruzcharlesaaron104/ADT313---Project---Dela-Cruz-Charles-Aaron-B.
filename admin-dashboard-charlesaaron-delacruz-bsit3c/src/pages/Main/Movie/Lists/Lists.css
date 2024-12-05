@@ -1,11 +1,9 @@
-/* Container for the entire page */
 .lists-container {
   padding: 20px;
   background-color: #3e3f41;
   font-family: Arial, sans-serif;
 }
 
-/* Button container for creating a new movie */
 .create-container {
   display: flex;
   justify-content: flex-end;
@@ -26,12 +24,10 @@
   background-color: #45a049;
 }
 
-/* Table container styling */
 .table-container {
   overflow-x: auto;
 }
 
-/* Table styles */
 .movie-lists {
   width: 100%;
   border-collapse: collapse;
@@ -54,7 +50,6 @@
   background-color: #cfc8ce;
 }
 
-/* Button styles for actions (Edit and Delete) */
 .edit-btn, .delete-btn {
   padding: 5px 10px;
   margin: 0 5px;
@@ -80,4 +75,22 @@
 
 .delete-btn:hover {
   background-color: #d32f2f;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-container button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination-container button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
