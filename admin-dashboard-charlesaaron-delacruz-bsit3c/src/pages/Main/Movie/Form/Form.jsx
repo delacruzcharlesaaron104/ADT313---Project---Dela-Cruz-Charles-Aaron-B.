@@ -4,9 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './Form.css';
 
 
-// create MovieContext
 const MovieContext = createContext();
-
 
 const Form = () => {
   const [query, setQuery] = useState('');
@@ -19,7 +17,7 @@ const Form = () => {
   const [trailers, setTrailers] = useState([]);
   const navigate = useNavigate();
   let { movieId } = useParams();
-
+  
   const [movies, setMovies] = useState([]);
 
   const handleSearch = useCallback(() => {
@@ -278,7 +276,7 @@ const Form = () => {
         </div>
       )}
 
-      <button type="button" onClick={handleSave}>
+      <button type="save-button" onClick={handleSave} className="save-btn" >
         Save
       </button>
     </MovieContext.Provider>

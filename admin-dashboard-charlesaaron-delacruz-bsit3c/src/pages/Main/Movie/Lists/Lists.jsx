@@ -8,7 +8,7 @@ const Lists = () => {
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // current page number
-  const [totalPages, setTotalPages] = useState(1); // total pages
+  const [totalPages, setTotalPages] = useState(1); // total pages for movie list
   const [pageSize, setPageSize] = useState(20); // number of items per page
 
   const getMovies = (page = 1) => {

@@ -6,6 +6,7 @@ import Login from './pages/Public/Login/Login';
 import Register from './pages/Register/Register';
 //import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Main from './pages/Main/Main';
+import Dashboard from './pages/Main/Dashboard/Dashboard';
 import Movie from './pages/Main/Movie/Movie';
 import Lists from './pages/Main/Movie/Lists/Lists';
 import Form from './pages/Main/Movie/Form/Form';
@@ -25,10 +26,10 @@ const router = createBrowserRouter([
     path: '/main',
     element: <Main />,
     children: [
-      //{
-        //path: '/main/dashboard',
-        //element: <Dashboard />,
-      //},
+      /*{
+        path: '/main/dashboard',
+        element: <Dashboard />,
+      },*/
       {
         path: '/main/movies',
         element: <Movie />,

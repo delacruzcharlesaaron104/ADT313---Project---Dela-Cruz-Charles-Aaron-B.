@@ -6,9 +6,32 @@
   cursor: pointer;
   
 }
+
+.search-container{
+  color: aqua;
+}
+
+
 .search-container p:hover {
   background-color: rgb(31, 32, 32);
-  
+  color: aqua;
+}
+
+.field{
+  margin-bottom: 16px;
+  color: aqua;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  max-width: 500px;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 .poster-image {
@@ -19,6 +42,14 @@
   overflow-y: auto;
 }
 
+.save-btn{
+  width: 150px;
+  height: 40px;
+  background-color: rgb(15, 70, 153);
+  color: white;
+  border-radius: 20px;
+}
+
 .field {
   padding: 20px;
   justify-content: center;
@@ -26,6 +57,7 @@
 
 .cast-section {
   margin-top: 20px;
+  color: white;
 }
 
 .cast-section ul {
@@ -64,6 +96,7 @@
 .trailer-section {
   margin-top: 30px;
   text-align: center;
+  color: white;
 }
 
 .trailer-section iframe {
