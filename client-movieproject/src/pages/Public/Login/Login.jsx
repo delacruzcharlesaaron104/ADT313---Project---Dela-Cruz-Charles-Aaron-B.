@@ -142,7 +142,7 @@ function Login() {
       }
     }}
   >
-    {status === 'idle' ? 'Login' : 'Loading, Please wait...'}
+    {status === 'idle' ? 'Login' : 'Loading...'}
   </button>
 </div>
             <div className='register-container'>

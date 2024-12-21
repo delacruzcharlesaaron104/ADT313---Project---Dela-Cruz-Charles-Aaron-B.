@@ -12,7 +12,7 @@ function Main() {
       setTimeout(() => {
         localStorage.removeItem('accessToken');
         navigate('/login'); // redirect to login page after logout
-      }, 3000); // 3 seconds delay before navigating
+      }, 2000); // 2 seconds delay before navigating
     }
   };
 
